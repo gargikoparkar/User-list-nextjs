@@ -2,8 +2,7 @@
 import { useState } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Dialog, TablePagination, Box,
-  Container
+  Paper, Button, Dialog, TablePagination, Box
 } from "@mui/material";
 import UserFormDialog from "./UserForm";
 import { initialUsers } from "../data/data";
@@ -46,7 +45,7 @@ const UsersTable = () => {
   };
 
   return (
-    <Box sx={{margin:4,top:4}}>
+    <Box sx={{ margin: 4, top: 4 }}  data-testid="user-table">
       <Box display="flex" justifyContent="flex-end" mb={2}>
         <Button variant="contained" color="primary" onClick={handleAddUser}>
           Add New User
@@ -55,13 +54,13 @@ const UsersTable = () => {
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{ bgcolor: (theme) => theme.palette.primary.main,  }}>
+          <TableHead sx={{ bgcolor: (theme) => theme.palette.primary.main, }}>
             <TableRow>
-              <TableCell sx={{color: "white", fontWeight: "bold"}}>ID</TableCell>
-              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>First Name</TableCell>
-              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>Last Name</TableCell>
-              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>Email</TableCell>
-              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}></TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>ID</TableCell>
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>First Name</TableCell>
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>Last Name</TableCell>
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>Email</TableCell>
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,7 +78,7 @@ const UsersTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{display: "flex", justifyContent: "center", marginTop: 2}}>
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
         <TablePagination
           component="div"
           count={users.length}
@@ -91,7 +90,12 @@ const UsersTable = () => {
         />
       </Box>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <UserFormDialog user={editingUser} onSave={handleSaveUser} onCancel={() => setDialogOpen(false)} />
+        <UserFormDialog
+          user={editingUser}
+          users={users} 
+          onSave={handleSaveUser}
+          onCancel={() => setDialogOpen(false)}
+        />
       </Dialog>
     </Box>
   );

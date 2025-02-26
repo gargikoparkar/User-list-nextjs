@@ -5,16 +5,19 @@ import {
   Box
 } from "@mui/material";
 import { User } from "../type/type";
-import { validateUserInput } from "../utils/validations";
+import validateUserInput from "../utils/validations";
+
 interface UserFormDialogProps {
+  users: User[];
   user: User | null;
   onSave: (user: User) => void;
   onCancel: () => void;
 }
 
-const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, onSave, onCancel }) => {
+const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, onCancel }) => {
   const [formData, setFormData] = useState<User>({ id: 0, first_name: "", last_name: "", email: "" });
-  const [errors, setErrors] = useState<{ email?: string }>({});
+  const [errors, setErrors] = useState<{ first_name?: string; last_name?: string; email?: string }>({});
+
   const [successMessage, setSuccessMessage] = useState("");
 
 
@@ -26,20 +29,14 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, onSave, onCancel 
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
-  const validate = () => {
-    const newErrors: { first_name?: string; last_name?: string; email?: string } = {};
-
-    if (!formData.first_name.trim()) newErrors.first_name = "First name is required";
-    if (!formData.last_name.trim()) newErrors.last_name = "Last name is required";
-    if (!formData.email.match(/^\S+@\S+\.\S+$/)) newErrors.email = "Invalid email address";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = () => {
-    const validationErrors = validateUserInput(formData.first_name, formData.last_name, formData.email);
+    const validationErrors = validateUserInput(
+      formData.first_name,
+      formData.last_name,
+      formData.email,
+      users,
+      formData.id
+    );
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -47,10 +44,10 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, onSave, onCancel 
     }
 
     onSave(formData);
-    setSuccessMessage("User added successfully!");  
+    setSuccessMessage("User added successfully!");
     setTimeout(() => {
-      setSuccessMessage(""); 
-      onCancel(); 
+      setSuccessMessage("");
+      onCancel();
     }, 3000);
   };
 
@@ -58,9 +55,29 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, onSave, onCancel 
     <>
       <DialogTitle>{user ? "Edit User" : "Add New User"}</DialogTitle>
       <DialogContent>
-        <TextField label="First Name" name="first_name" value={formData.first_name} onChange={handleChange} fullWidth margin="dense" required />
-        <TextField label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} fullWidth margin="dense" required />
-        <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth margin="dense" required error={!!errors.email} helperText={errors.email} />
+        <TextField label="First Name"
+          name="first_name"
+          value={formData.first_name}
+          onChange={handleChange}
+          fullWidth margin="dense"
+          required
+          error={!!errors.first_name}
+          helperText={errors.first_name} />
+        <TextField label="Last Name"
+          name="last_name"
+          value={formData.last_name}
+          onChange={handleChange}
+          fullWidth margin="dense"
+          required
+          error={!!errors.last_name}
+          helperText={errors.first_name} />
+        <TextField label="Email"
+          name="email" value={formData.email}
+          onChange={handleChange}
+          fullWidth margin="dense"
+          required
+          error={!!errors.email}
+          helperText={errors.email} />
 
         {successMessage && (
           <p style={{ color: "green", marginTop: 10 }}>{successMessage}</p>
