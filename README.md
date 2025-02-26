@@ -1,13 +1,19 @@
 # User-list-nextjs
 ## 📂 Project Structure
 ```
+__test__ /
+|--UserForm.test.tsx
+|--UserTable.test.tsx
 app/
 │-- components/
 │   ├── UserTable.tsx  
 │   ├── UserForm.tsx
-|-- lib/
-|   |-- type.ts
-|   |-- data.ts 
+|-- data/
+|   |-- data.ts
+|-- types/
+|   |--type.ts
+|-- utils/
+|   |--validations.ts
 │-- page.tsx
 │-- public/
 │-- styles/
