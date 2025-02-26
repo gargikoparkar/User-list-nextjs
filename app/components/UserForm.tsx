@@ -52,9 +52,9 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
   };
 
   return (
-    <>
+    <Box data-testid="user-form">
       <DialogTitle>{user ? "Edit User" : "Add New User"}</DialogTitle>
-      <DialogContent>
+      <DialogContent data-testid="dialogbox-container">
         <TextField label="First Name"
           name="first_name"
           value={formData.first_name}
@@ -83,8 +83,8 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
           <p style={{ color: "green", marginTop: 10 }}>{successMessage}</p>
         )}
       </DialogContent>
-      <DialogActions>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "center", gap: 2 }}>
+      <DialogActions data-testid="dialog-buttons">
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center", gap: 2 }} >
           <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {
             onCancel();
           }}>Cancel</Button>
@@ -93,7 +93,7 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
           }}>Submit</Button>
         </Box>
       </DialogActions>
-    </>
+    </Box>
   );
 }
 export default UserFormDialog

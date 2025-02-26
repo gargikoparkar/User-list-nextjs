@@ -52,7 +52,7 @@ const UsersTable = () => {
         </Button>
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} data-testid="table-container">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead sx={{ bgcolor: (theme) => theme.palette.primary.main, }}>
             <TableRow>
@@ -87,6 +87,7 @@ const UsersTable = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 25]}
+          data-testid="table-pagination"
         />
       </Box>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
