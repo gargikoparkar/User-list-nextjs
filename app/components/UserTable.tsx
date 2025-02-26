@@ -2,7 +2,8 @@
 import { useState } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Dialog, TablePagination, Box
+  Paper, Button, Dialog, TablePagination, Box,
+  Typography
 } from "@mui/material";
 import UserFormDialog from "./UserForm";
 import { initialUsers } from "../data/data";
@@ -15,6 +16,8 @@ const UsersTable = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   const handleAddUser = () => {
     setEditingUser(null);
@@ -33,6 +36,9 @@ const UsersTable = () => {
         : [...prevUsers, { ...user, id: prevUsers.length + 1 }]
     );
     setDialogOpen(false);
+    setSuccessMessage(user.id ? "User updated successfully!" : "User added successfully!");
+    setTimeout(() => setSuccessMessage(""), 3000);
+    setDialogOpen(false);
   };
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -45,13 +51,32 @@ const UsersTable = () => {
   };
 
   return (
-    <Box sx={{ margin: 4, top: 4 }}  data-testid="user-table">
+    <Box sx={{ margin: 4,  position: "relative"}} data-testid="user-table">
       <Box display="flex" justifyContent="flex-end" mb={2}>
         <Button variant="contained" color="primary" onClick={handleAddUser}>
           Add New User
         </Button>
       </Box>
-
+      {successMessage && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0, 
+            left: "50%",
+            transform: "translate(-50%, -100%)", 
+            backgroundColor: "success.light",
+            padding: "8px 16px",
+            borderRadius: 1,
+            color: "white",
+            fontWeight: "bold",
+            boxShadow: 3, 
+            zIndex: 10,
+            mt: 4, 
+          }}
+        >
+          <Typography>{successMessage}</Typography>
+        </Box>
+      )}
       <TableContainer component={Paper} data-testid="table-container">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead sx={{ bgcolor: (theme) => theme.palette.primary.main, }}>
@@ -93,12 +118,12 @@ const UsersTable = () => {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <UserFormDialog
           user={editingUser}
-          users={users} 
+          users={users}
           onSave={handleSaveUser}
           onCancel={() => setDialogOpen(false)}
         />
       </Dialog>
-    </Box>
+    </Box >
   );
 }
 

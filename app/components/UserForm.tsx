@@ -18,9 +18,6 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
   const [formData, setFormData] = useState<User>({ id: 0, first_name: "", last_name: "", email: "" });
   const [errors, setErrors] = useState<{ first_name?: string; last_name?: string; email?: string }>({});
 
-  const [successMessage, setSuccessMessage] = useState("");
-
-
   useEffect(() => {
     if (user) setFormData(user);
   }, [user]);
@@ -44,11 +41,6 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
     }
 
     onSave(formData);
-    setSuccessMessage("User added successfully!");
-    setTimeout(() => {
-      setSuccessMessage("");
-      onCancel();
-    }, 3000);
   };
 
   return (
@@ -78,10 +70,6 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, users, onSave, on
           required
           error={!!errors.email}
           helperText={errors.email} />
-
-        {successMessage && (
-          <p style={{ color: "green", marginTop: 10 }}>{successMessage}</p>
-        )}
       </DialogContent>
       <DialogActions data-testid="dialog-buttons">
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center", gap: 2 }} >
