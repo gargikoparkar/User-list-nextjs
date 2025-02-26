@@ -9,7 +9,8 @@ import UserFormDialog from "./UserForm";
 import { initialUsers } from "../lib/data";
 import { User } from "../lib/type";
 
-export default function UsersTable() {
+
+const UsersTable = () => {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -23,7 +24,7 @@ export default function UsersTable() {
 
   const handleEditUser = (user: User) => {
     setEditingUser(user);
-    setDialogOpen(true);  
+    setDialogOpen(true);
   };
 
   const handleSaveUser = (user: User) => {
@@ -45,7 +46,7 @@ export default function UsersTable() {
   };
 
   return (
-    <Container sx={{mt:6}}>
+    <Container sx={{ mt: 6 }}>
       <Box display="flex" justifyContent="flex-end" mb={2}>
         <Button variant="contained" color="primary" onClick={handleAddUser}>
           Add New User
@@ -78,8 +79,6 @@ export default function UsersTable() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* Pagination Controls */}
       <TablePagination
         component="div"
         count={users.length}
@@ -95,3 +94,5 @@ export default function UsersTable() {
     </Container>
   );
 }
+
+export default UsersTable;

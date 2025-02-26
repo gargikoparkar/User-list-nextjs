@@ -1,19 +1,17 @@
 "use client"
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DialogTitle, DialogContent, DialogActions, Button, TextField,
   Box
 } from "@mui/material";
 import { User } from "../lib/type";
-
-
 interface UserFormDialogProps {
   user: User | null;
   onSave: (user: User) => void;
   onCancel: () => void;
 }
 
-export default function UserFormDialog({ user, onSave, onCancel }: UserFormDialogProps) {
+const UserFormDialog : React.FC<UserFormDialogProps>=({ user, onSave, onCancel }) =>{
   const [formData, setFormData] = useState<User>({  id : 0  ,  first_name: "", last_name: "", email: "" });
   const [errors, setErrors] = useState<{ email?: string }>({});
 
@@ -65,3 +63,4 @@ export default function UserFormDialog({ user, onSave, onCancel }: UserFormDialo
     </>
   );
 }
+export default UserFormDialog
