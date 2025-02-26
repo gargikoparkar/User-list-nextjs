@@ -12,5 +12,17 @@ export let initialUsers: User[] = [
         last_name: "Giller",
         email: "rossgeller@example.com"
     },
+    {
+        id: 3,
+        first_name: "Monica",
+        last_name: "Giller",
+        email: "monicageller@example.com"
+    },
+    {
+        id: 4,
+        first_name: "Joey",
+        last_name: "Tribbiani",
+        email: "joeytribbiani@example.com"
+    },
     
 ];
