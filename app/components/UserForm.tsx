@@ -4,16 +4,19 @@ import {
   DialogTitle, DialogContent, DialogActions, Button, TextField,
   Box
 } from "@mui/material";
-import { User } from "../lib/type";
+import { User } from "../type/type";
+import { validateUserInput } from "../utils/validations";
 interface UserFormDialogProps {
   user: User | null;
   onSave: (user: User) => void;
   onCancel: () => void;
 }
 
-const UserFormDialog : React.FC<UserFormDialogProps>=({ user, onSave, onCancel }) =>{
-  const [formData, setFormData] = useState<User>({  id : 0  ,  first_name: "", last_name: "", email: "" });
+const UserFormDialog: React.FC<UserFormDialogProps> = ({ user, onSave, onCancel }) => {
+  const [formData, setFormData] = useState<User>({ id: 0, first_name: "", last_name: "", email: "" });
   const [errors, setErrors] = useState<{ email?: string }>({});
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   useEffect(() => {
     if (user) setFormData(user);
@@ -36,10 +39,19 @@ const UserFormDialog : React.FC<UserFormDialogProps>=({ user, onSave, onCancel }
   };
 
   const handleSubmit = () => {
-    if (validate()) {
-      onSave({ ...formData }); 
-      onCancel();
+    const validationErrors = validateUserInput(formData.first_name, formData.last_name, formData.email);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+
+    onSave(formData);
+    setSuccessMessage("User added successfully!");  
+    setTimeout(() => {
+      setSuccessMessage(""); 
+      onCancel(); 
+    }, 3000);
   };
 
   return (
@@ -49,10 +61,14 @@ const UserFormDialog : React.FC<UserFormDialogProps>=({ user, onSave, onCancel }
         <TextField label="First Name" name="first_name" value={formData.first_name} onChange={handleChange} fullWidth margin="dense" required />
         <TextField label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} fullWidth margin="dense" required />
         <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth margin="dense" required error={!!errors.email} helperText={errors.email} />
+
+        {successMessage && (
+          <p style={{ color: "green", marginTop: 10 }}>{successMessage}</p>
+        )}
       </DialogContent>
       <DialogActions>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" ,gap:2}}>
-        <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center", gap: 2 }}>
+          <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {
             onCancel();
           }}>Cancel</Button>
           <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {

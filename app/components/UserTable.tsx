@@ -6,8 +6,8 @@ import {
   Container
 } from "@mui/material";
 import UserFormDialog from "./UserForm";
-import { initialUsers } from "../lib/data";
-import { User } from "../lib/type";
+import { initialUsers } from "../data/data";
+import { User } from "../type/type";
 
 
 const UsersTable = () => {
@@ -46,7 +46,7 @@ const UsersTable = () => {
   };
 
   return (
-    <Container sx={{ mt: 6 }}>
+    <Box sx={{margin:4,top:4}}>
       <Box display="flex" justifyContent="flex-end" mb={2}>
         <Button variant="contained" color="primary" onClick={handleAddUser}>
           Add New User
@@ -55,13 +55,13 @@ const UsersTable = () => {
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
+        <TableHead sx={{ bgcolor: (theme) => theme.palette.primary.main,  }}>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="center">First Name</TableCell>
-              <TableCell align="center">Last Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center"></TableCell>
+              <TableCell sx={{color: "white", fontWeight: "bold"}}>ID</TableCell>
+              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>First Name</TableCell>
+              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>Last Name</TableCell>
+              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}>Email</TableCell>
+              <TableCell align="center" sx={{color: "white", fontWeight: "bold"}}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,19 +79,21 @@ const UsersTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        component="div"
-        count={users.length}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+      <Box sx={{display: "flex", justifyContent: "center", marginTop: 2}}>
+        <TablePagination
+          component="div"
+          count={users.length}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      </Box>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <UserFormDialog user={editingUser} onSave={handleSaveUser} onCancel={() => setDialogOpen(false)} />
       </Dialog>
-    </Container>
+    </Box>
   );
 }
 

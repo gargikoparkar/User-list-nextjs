@@ -1,4 +1,4 @@
-import { User } from "./type";
+import { User } from "../type/type";
 export let initialUsers: User[] = [
     {
         id: 1,
