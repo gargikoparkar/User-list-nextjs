@@ -1,7 +1,8 @@
 "use client"
 import { useState, useEffect } from "react";
 import {
-  DialogTitle, DialogContent, DialogActions, Button, TextField
+  DialogTitle, DialogContent, DialogActions, Button, TextField,
+  Box
 } from "@mui/material";
 import { User } from "../lib/type";
 
@@ -13,7 +14,7 @@ interface UserFormDialogProps {
 }
 
 export default function UserFormDialog({ user, onSave, onCancel }: UserFormDialogProps) {
-  const [formData, setFormData] = useState<User>({ id: 0, first_name: "", last_name: "", email: "" });
+  const [formData, setFormData] = useState<User>({  id : 0  ,  first_name: "", last_name: "", email: "" });
   const [errors, setErrors] = useState<{ email?: string }>({});
 
   useEffect(() => {
@@ -24,15 +25,23 @@ export default function UserFormDialog({ user, onSave, onCancel }: UserFormDialo
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
   const validate = () => {
-    const newErrors: { email?: string } = {};
+    const newErrors: { first_name?: string; last_name?: string; email?: string } = {};
+
+    if (!formData.first_name.trim()) newErrors.first_name = "First name is required";
+    if (!formData.last_name.trim()) newErrors.last_name = "Last name is required";
     if (!formData.email.match(/^\S+@\S+\.\S+$/)) newErrors.email = "Invalid email address";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
-    if (validate()) onSave(formData);
+    if (validate()) {
+      onSave({ ...formData }); 
+      onCancel();
+    }
   };
 
   return (
@@ -44,10 +53,14 @@ export default function UserFormDialog({ user, onSave, onCancel }: UserFormDialo
         <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth margin="dense" required error={!!errors.email} helperText={errors.email} />
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary" onClick={() => {
-          handleSubmit();
-          onCancel();
-        }}>Submit</Button>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" ,gap:2}}>
+        <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {
+            onCancel();
+          }}>Cancel</Button>
+          <Button variant="contained" color="primary" sx={{ justifyContent: "center" }} onClick={() => {
+            handleSubmit();
+          }}>Submit</Button>
+        </Box>
       </DialogActions>
     </>
   );

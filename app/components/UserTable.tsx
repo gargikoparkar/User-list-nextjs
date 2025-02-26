@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import { useState } from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  Button, Dialog, TablePagination
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, Button, Dialog, TablePagination, Box,
+  Container
 } from "@mui/material";
 import UserFormDialog from "./UserForm";
 import { initialUsers } from "../lib/data";
@@ -22,7 +23,7 @@ export default function UsersTable() {
 
   const handleEditUser = (user: User) => {
     setEditingUser(user);
-    setDialogOpen(true);
+    setDialogOpen(true);  
   };
 
   const handleSaveUser = (user: User) => {
@@ -44,29 +45,32 @@ export default function UsersTable() {
   };
 
   return (
-    <Paper sx={{ width: "80%", margin: "auto", padding: 2 }}>
-      <Button variant="contained" color="primary" onClick={handleAddUser}>
-        Add New User
-      </Button>
-      <TableContainer sx={{ marginTop: 2 ,padding:2}}>
-        <Table>
+    <Container sx={{mt:6}}>
+      <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Button variant="contained" color="primary" onClick={handleAddUser}>
+          Add New User
+        </Button>
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell></TableCell>
+              <TableCell align="center">First Name</TableCell>
+              <TableCell align="center">Last Name</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
-                <TableCell>{user.first_name}</TableCell>
-                <TableCell>{user.last_name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
+                <TableCell align="center">{user.first_name}</TableCell>
+                <TableCell align="center">{user.last_name}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">
                   <Button variant="outlined" onClick={() => handleEditUser(user)}>Edit</Button>
                 </TableCell>
               </TableRow>
@@ -74,6 +78,8 @@ export default function UsersTable() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination Controls */}
       <TablePagination
         component="div"
         count={users.length}
@@ -81,10 +87,11 @@ export default function UsersTable() {
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25]}
       />
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <UserFormDialog user={editingUser} onSave={handleSaveUser} onCancel={() => setDialogOpen(false)} />
       </Dialog>
-    </Paper>
+    </Container>
   );
 }
